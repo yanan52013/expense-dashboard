@@ -22,16 +22,39 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans SC", sans-serif;
     -webkit-font-smoothing: antialiased; line-height: 1.55;
   }
-  .app { min-height: 100vh; display: flex; flex-direction: column; }
-  .topbar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding: 14px 24px; background: rgba(255,250,240,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-  .topbar .brand { display: flex; align-items: center; gap: 12px; }
-  .topbar .logo { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: linear-gradient(135deg, #f4c14e, #e99b2a); color: #fff; font-weight: 800; font-size: 17px; box-shadow: 0 2px 8px rgba(233,155,42,0.35); }
-  .topbar h1 { margin: 0; font-size: 18px; font-weight: 750; }
-  .topbar .sub { font-size: 12px; color: var(--muted); }
-  .topbar .meta { display: flex; gap: 10px; flex-wrap: wrap; }
-  .chip { background: #fff; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 12px; color: var(--ink-2); box-shadow: 0 1px 3px rgba(150,120,60,0.06); }
 
-  .main { flex: 1; padding: 20px 24px 48px; display: flex; flex-direction: column; gap: 18px; }
+  .layout { display: flex; min-height: 100vh; }
+
+  /* ---------- 侧边栏 ---------- */
+  .sidebar {
+    width: 216px; flex: none; position: sticky; top: 0; height: 100vh;
+    background: #fff; border-right: 1px solid var(--line);
+    padding: 18px 14px; display: flex; flex-direction: column; gap: 6px;
+    box-shadow: 2px 0 12px rgba(150,120,60,0.04);
+  }
+  .sidebar .logo { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 800; padding: 6px 10px 16px; border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+  .sidebar .logo .ico { width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center; background: linear-gradient(135deg, #f4c14e, #e99b2a); color: #fff; font-size: 16px; box-shadow: 0 2px 8px rgba(233,155,42,0.35); }
+  .nav-btn {
+    display: flex; align-items: center; gap: 10px; border: none; background: none;
+    font-size: 14px; font-weight: 600; color: var(--ink-2); padding: 11px 13px;
+    border-radius: 10px; cursor: pointer; font-family: inherit; text-align: left; width: 100%;
+  }
+  .nav-btn .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
+  .nav-btn.on { background: #fbf1de; color: #b06f14; }
+  .nav-btn.on .dot { background: var(--accent); }
+  .nav-btn:hover:not(.on) { background: var(--panel-2); }
+  .sidebar .spacer { flex: 1; }
+  .sidebar .bal { background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 12px; color: var(--muted); }
+  .sidebar .bal b { display: block; color: var(--ink); font-size: 20px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; margin-top: 4px; }
+
+  /* ---------- 主内容 ---------- */
+  .main { flex: 1; min-width: 0; padding: 22px 26px 56px; display: flex; flex-direction: column; gap: 18px; }
+  .page { display: none; flex-direction: column; gap: 18px; }
+  .page.on { display: flex; }
+  .page-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+  .page-head h2 { margin: 0; font-size: 20px; font-weight: 800; }
+  .page-head .sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
   .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow); }
   .kpi .label { font-size: 13px; color: var(--muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
@@ -44,13 +67,13 @@
 
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .card { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 22px; box-shadow: var(--shadow); }
-  .card h2 { margin: 0 0 4px; font-size: 16px; font-weight: 700; }
+  .card h3 { margin: 0 0 4px; font-size: 15px; font-weight: 700; }
   .card .hint { margin: 0 0 16px; font-size: 12px; color: var(--muted); }
   .chart { width: 100%; height: 300px; }
   .full { grid-column: 1 / -1; }
 
   .tbl-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 720px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 760px; }
   th, td { text-align: left; padding: 9px 11px; border-bottom: 1px solid var(--line); vertical-align: middle; }
   th { color: var(--muted); font-weight: 600; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -58,11 +81,11 @@
   .total-row td { border-top: 2px solid var(--line); font-weight: 800; background: var(--panel-2); }
   .cat-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 7px; }
   .person-tag { display: inline-block; padding: 2px 9px; border-radius: 6px; font-size: 11px; font-weight: 600; background: #f3ede2; color: #6b5c47; }
+  .id-tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; background: #fbf1de; color: #b06f14; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 
   .thumbs { display: flex; flex-wrap: wrap; gap: 6px; }
   .thumb { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; cursor: zoom-in; border: 1px solid var(--line); background: var(--panel-2); transition: transform .12s ease, opacity .12s ease; }
   .thumb:hover { transform: scale(1.1); opacity: 0.88; }
-  .thumb-count { font-size: 11px; color: var(--muted); }
 
   .lightbox { position: fixed; inset: 0; background: rgba(20,15,8,0.88); display: none; align-items: center; justify-content: center; z-index: 999; padding: 24px; flex-direction: column; gap: 12px; }
   .lightbox.open { display: flex; }
@@ -74,74 +97,108 @@
   .lightbox .lb-nav:hover { opacity: 1; }
 
   @media (max-width: 900px) {
+    .layout { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 14px; }
+    .sidebar .logo { border: none; margin: 0; padding: 4px 6px; }
+    .sidebar .spacer, .sidebar .bal { display: none; }
     .kpis { grid-template-columns: 1fr; }
     .row { grid-template-columns: 1fr; }
     .kpi .value { font-size: 34px; }
-    .main { padding: 14px 14px 40px; }
-    .topbar { padding: 12px 14px; }
+    .main { padding: 14px; }
   }
 </style>
 </head>
 <body>
-<div class="app">
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">账</div>
-      <div>
-        <h1>生活支出台账</h1>
-        <div class="sub">进账 · 出账 明细</div>
-      </div>
-    </div>
-    <div class="meta">
-      <span class="chip">进账 2 笔</span>
-      <span class="chip">出账 16 笔</span>
-      <span class="chip">周期 2026-08-09 ~ 08-17</span>
-    </div>
-  </header>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="logo"><span class="ico">账</span>生活支出台账</div>
+    <button class="nav-btn on" data-page="overview"><span class="dot"></span>数据概览</button>
+    <button class="nav-btn" data-page="detail"><span class="dot"></span>收支明细</button>
+    <button class="nav-btn" data-page="alert"><span class="dot"></span>余额提醒</button>
+    <div class="spacer"></div>
+    <div class="bal">当前结余<b id="side-balance">−¥559.22</b></div>
+  </aside>
 
   <main class="main">
-    <section class="kpis">
-      <div class="kpi income">
-        <div class="label"><span class="dot" style="background:var(--income)"></span>总收入（进账）</div>
-        <div class="value" id="kpi-income">¥1,242.00</div>
-        <div class="sub">进账表 2 笔</div>
+    <!-- 数据概览 -->
+    <section class="page on" id="page-overview">
+      <div class="page-head">
+        <div><h2>数据概览</h2><div class="sub">进账 2 笔 · 出账 16 笔</div></div>
       </div>
-      <div class="kpi expense">
-        <div class="label"><span class="dot" style="background:var(--expense)"></span>总支出（出账）</div>
-        <div class="value" id="kpi-expense">¥1,801.22</div>
-        <div class="sub">出账表 16 笔</div>
+      <div class="kpis">
+        <div class="kpi income">
+          <div class="label"><span class="dot" style="background:var(--income)"></span>总收入（进账）</div>
+          <div class="value">¥1,242.00</div>
+          <div class="sub">进账表 2 笔</div>
+        </div>
+        <div class="kpi expense">
+          <div class="label"><span class="dot" style="background:var(--expense)"></span>总支出（出账）</div>
+          <div class="value">¥1,801.22</div>
+          <div class="sub">出账表 16 笔</div>
+        </div>
+        <div class="kpi balance">
+          <div class="label"><span class="dot" style="background:var(--ink)"></span>结余</div>
+          <div class="value">−¥559.22</div>
+          <div class="sub">收入 − 支出</div>
+        </div>
       </div>
-      <div class="kpi balance">
-        <div class="label"><span class="dot" style="background:var(--ink)"></span>结余</div>
-        <div class="value" id="kpi-balance">−¥559.22</div>
-        <div class="sub">收入 − 支出</div>
+      <div class="row">
+        <div class="card">
+          <h3>支出构成</h3>
+          <p class="hint">按项目类别汇总</p>
+          <div class="chart" id="chart-pie"></div>
+        </div>
+        <div class="card">
+          <h3>项目汇总</h3>
+          <p class="hint">各项目的金额与占比</p>
+          <div id="cat-table"></div>
+        </div>
       </div>
     </section>
 
-    <section class="row">
-      <div class="card">
-        <h2>支出构成</h2>
-        <p class="hint">按项目类别汇总</p>
-        <div class="chart" id="chart-pie"></div>
+    <!-- 收支明细 -->
+    <section class="page" id="page-detail">
+      <div class="page-head">
+        <div><h2>收支明细</h2><div class="sub">每一笔流水都有编号，有异议直接报编号</div></div>
       </div>
       <div class="card">
-        <h2>项目汇总</h2>
-        <p class="hint">各项目的金额与占比</p>
-        <div id="cat-table"></div>
-      </div>
-    </section>
-
-    <section class="row">
-      <div class="card full">
-        <h2>进账明细（2 笔）</h2>
-        <p class="hint">进账表 · 点击缩略图查看收款截图</p>
+        <h3>进账明细（2 笔）</h3>
+        <p class="hint">点击缩略图查看收款截图</p>
         <div class="tbl-wrap" id="income-table"></div>
       </div>
-
-      <div class="card full">
-        <h2>出账明细（16 笔）</h2>
-        <p class="hint">出账表 · 点击缩略图查看付款截图</p>
+      <div class="card">
+        <h3>出账明细（16 笔）</h3>
+        <p class="hint">点击缩略图查看付款截图</p>
         <div class="tbl-wrap" id="expense-table"></div>
+      </div>
+    </section>
+
+    <!-- 余额提醒 -->
+    <section class="page" id="page-alert">
+      <div class="page-head">
+        <div><h2>余额提醒</h2><div class="sub">当前资金状况</div></div>
+      </div>
+      <div class="kpis">
+        <div class="kpi income">
+          <div class="label"><span class="dot" style="background:var(--income)"></span>总收入</div>
+          <div class="value">¥1,242.00</div>
+        </div>
+        <div class="kpi expense">
+          <div class="label"><span class="dot" style="background:var(--expense)"></span>总支出</div>
+          <div class="value">¥1,801.22</div>
+        </div>
+        <div class="kpi balance">
+          <div class="label"><span class="dot" style="background:var(--ink)"></span>结余</div>
+          <div class="value">−¥559.22</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>提醒</h3>
+        <p class="hint">根据当前账目自动提示</p>
+        <div style="display:flex; flex-direction:column; gap:10px; font-size:14px;">
+          <div style="padding:12px 14px; border:1px solid #f0d9c0; background:#fdf3e6; border-radius:10px; color:#9a6b1f;">⚠ 当前支出 ¥1,801.22 已超过收入 ¥1,242.00，结余为 <b>−¥559.22</b>，请注意控制支出。</div>
+          <div style="padding:12px 14px; border:1px solid var(--line); background:var(--panel-2); border-radius:10px; color:var(--ink-2);">本月最大支出项目为「伙食采购」，合计 ¥1,149.21（占比 63.80%）。</div>
+        </div>
       </div>
     </section>
   </main>
@@ -166,30 +223,30 @@
     { key: '日常', name: '日常小吃', color: '#e2552f' }
   ];
 
-  // 出账：[date, person, 物业, 电费, 伙食, 日常, imgs]
+  // 出账：[id, date, person, 物业, 电费, 伙食, 日常, imgs]
   var expenses = [
-    { date: '08-10', person: '颜安老师', v: [274.00, 342.71, null, null], imgs: ['img/recvrSCuivCC3w/f9d49b7cb43fe449202797dc8523032f.jpg', 'img/recvrSCuivCC3w/d8808662af44a42f6c1824e67c0cdc32.jpg'] },
-    { date: '08-11', person: '颜安老师', v: [null, null, 26.14, null], imgs: ['img/recvrX7OiSMKhI/ab0d0457107abf4566e7dd2ce860c804.png', 'img/recvrX7OiSMKhI/a8a314cc22f1f14c69d91506814342c5.png'] },
-    { date: '08-09', person: '小慧老师', v: [null, null, 259.13, null], imgs: ['img/recvrX8WZTkPE7/2d23f817345798e4953b7c08869b3918.jpg'] },
-    { date: '08-11', person: '永哲', v: [null, null, 90.00, null], imgs: ['img/recvrX9rwjLDXY/ef3da82fa722c8265df47cab6d7a6ea5.jpg'] },
-    { date: '08-09', person: '永哲', v: [null, null, 116.00, null], imgs: ['img/recvrXauHDehEP/40287f67ae69f318f76de526ca6c7b38.jpg', 'img/recvrXauHDehEP/3eddefd878ab82160c4f1db4ab23c879.jpg'] },
-    { date: '08-11', person: '永哲', v: [null, null, 22.65, null], imgs: ['img/recvrZtwcKjZ70/9fbb71bae2656128d55802c05204d769.jpg'] },
-    { date: '08-12', person: '颜安老师', v: [null, null, null, 25.30], imgs: ['img/recvs3yYO7M8NM/11fe2284b46d7ac59356d2e291921eac.jpg', 'img/recvs3yYO7M8NM/image.png'] },
-    { date: '08-12', person: '永哲', v: [null, null, 4.59, null], imgs: ['img/recvs5IAu1L2je/3f5921a5cffe26fda59f90a70e21e9fc.jpg'] },
-    { date: '08-13', person: '永哲', v: [null, null, 39.90, null], imgs: ['img/recvs98A0wEngm/d6f91c285b610f5d72861e814e12589a.jpg'] },
-    { date: '08-14', person: '永哲', v: [null, null, 80.00, 10.00], imgs: ['img/recvseN6wiyAME/118b379e0aa9e41ed71ea7d2057784a0.jpg','img/recvseN6wiyAME/516e4c9a4504cb1f4e0ae1d42eaa8dcc.jpg','img/recvseN6wiyAME/61b4c49df19c4bc5a855e4da4d1f70c4.jpg','img/recvseN6wiyAME/6b11fa0cc6c103af8659e73258a5cba4.jpg','img/recvseN6wiyAME/85560090a0dccf9d4135edda6eb1e230.jpg','img/recvseN6wiyAME/d9f1fa4d7355d11b65994308a5a7c9ed.jpg','img/recvseN6wiyAME/fb443bbe7ab1410fdb17e735876a5c73.jpg'] },
-    { date: '08-15', person: '永哲', v: [null, null, 55.82, null], imgs: ['img/recvsqnRHn4mGC/944304f917cc9316cae2c5ceb3e49379.jpg', 'img/recvsqnRHn4mGC/617e15d2c83853556447d65e76ec045d.jpg'] },
-    { date: '08-16', person: '永哲', v: [null, null, 37.00, null], imgs: ['img/recvsswJuC18T5/7c74c772fbbd415d878282d81f784f66.jpg', 'img/recvsswJuC18T5/892d396a3981a73fe03ccc6171b89c41.jpg'] },
-    { date: '08-16', person: '华容老师', v: [null, null, 224.59, null], imgs: ['img/recvssE5WnR4Po/5914373dae8b9cc565987d704c853c4e.jpg'] },
-    { date: '08-17', person: '永哲', v: [null, null, 100.00, null], imgs: ['img/recvsw1fnfo3Xy/843eb18b95ea1c1123226cc74505200e.jpg','img/recvsw1fnfo3Xy/b51bc481f12033decfec4c8e8c11f7e3.jpg','img/recvsw1fnfo3Xy/f3ec10af672d69b06282e6f2776f8fba.jpg','img/recvsw1fnfo3Xy/b12910f0994a17000cc0c9cebc4ed1ff.jpg'] },
-    { date: '08-12', person: '永哲', v: [null, null, 78.30, null], imgs: ['img/recvswzzAp7SKz/07e274e7e208c84e79462507f7434d62.jpg'] },
-    { date: '08-11', person: '永哲', v: [null, null, 15.09, null], imgs: ['img/recvswzAqJhNnp/2c32bbd1857558b88347b65297e04b07.jpg'] }
+    { id: '100001', date: '08-10', person: '颜安老师', v: [274.00, 342.71, null, null], imgs: ['img/recvrSCuivCC3w/f9d49b7cb43fe449202797dc8523032f.jpg', 'img/recvrSCuivCC3w/d8808662af44a42f6c1824e67c0cdc32.jpg'] },
+    { id: '100002', date: '08-11', person: '颜安老师', v: [null, null, 26.14, null], imgs: ['img/recvrX7OiSMKhI/ab0d0457107abf4566e7dd2ce860c804.png', 'img/recvrX7OiSMKhI/a8a314cc22f1f14c69d91506814342c5.png'] },
+    { id: '100003', date: '08-09', person: '小慧老师', v: [null, null, 259.13, null], imgs: ['img/recvrX8WZTkPE7/2d23f817345798e4953b7c08869b3918.jpg'] },
+    { id: '100004', date: '08-11', person: '永哲', v: [null, null, 90.00, null], imgs: ['img/recvrX9rwjLDXY/ef3da82fa722c8265df47cab6d7a6ea5.jpg'] },
+    { id: '100005', date: '08-09', person: '永哲', v: [null, null, 116.00, null], imgs: ['img/recvrXauHDehEP/40287f67ae69f318f76de526ca6c7b38.jpg', 'img/recvrXauHDehEP/3eddefd878ab82160c4f1db4ab23c879.jpg'] },
+    { id: '100006', date: '08-11', person: '永哲', v: [null, null, 22.65, null], imgs: ['img/recvrZtwcKjZ70/9fbb71bae2656128d55802c05204d769.jpg'] },
+    { id: '100007', date: '08-12', person: '颜安老师', v: [null, null, null, 25.30], imgs: ['img/recvs3yYO7M8NM/11fe2284b46d7ac59356d2e291921eac.jpg', 'img/recvs3yYO7M8NM/image.png'] },
+    { id: '100008', date: '08-12', person: '永哲', v: [null, null, 4.59, null], imgs: ['img/recvs5IAu1L2je/3f5921a5cffe26fda59f90a70e21e9fc.jpg'] },
+    { id: '100009', date: '08-13', person: '永哲', v: [null, null, 39.90, null], imgs: ['img/recvs98A0wEngm/d6f91c285b610f5d72861e814e12589a.jpg'] },
+    { id: '100010', date: '08-14', person: '永哲', v: [null, null, 80.00, 10.00], imgs: ['img/recvseN6wiyAME/118b379e0aa9e41ed71ea7d2057784a0.jpg','img/recvseN6wiyAME/516e4c9a4504cb1f4e0ae1d42eaa8dcc.jpg','img/recvseN6wiyAME/61b4c49df19c4bc5a855e4da4d1f70c4.jpg','img/recvseN6wiyAME/6b11fa0cc6c103af8659e73258a5cba4.jpg','img/recvseN6wiyAME/85560090a0dccf9d4135edda6eb1e230.jpg','img/recvseN6wiyAME/d9f1fa4d7355d11b65994308a5a7c9ed.jpg','img/recvseN6wiyAME/fb443bbe7ab1410fdb17e735876a5c73.jpg'] },
+    { id: '100011', date: '08-15', person: '永哲', v: [null, null, 55.82, null], imgs: ['img/recvsqnRHn4mGC/944304f917cc9316cae2c5ceb3e49379.jpg', 'img/recvsqnRHn4mGC/617e15d2c83853556447d65e76ec045d.jpg'] },
+    { id: '100012', date: '08-16', person: '永哲', v: [null, null, 37.00, null], imgs: ['img/recvsswJuC18T5/7c74c772fbbd415d878282d81f784f66.jpg', 'img/recvsswJuC18T5/892d396a3981a73fe03ccc6171b89c41.jpg'] },
+    { id: '100013', date: '08-16', person: '华容老师', v: [null, null, 224.59, null], imgs: ['img/recvssE5WnR4Po/5914373dae8b9cc565987d704c853c4e.jpg'] },
+    { id: '100014', date: '08-17', person: '永哲', v: [null, null, 100.00, null], imgs: ['img/recvsw1fnfo3Xy/843eb18b95ea1c1123226cc74505200e.jpg','img/recvsw1fnfo3Xy/b51bc481f12033decfec4c8e8c11f7e3.jpg','img/recvsw1fnfo3Xy/f3ec10af672d69b06282e6f2776f8fba.jpg','img/recvsw1fnfo3Xy/b12910f0994a17000cc0c9cebc4ed1ff.jpg'] },
+    { id: '100015', date: '08-12', person: '永哲', v: [null, null, 78.30, null], imgs: ['img/recvswzzAp7SKz/07e274e7e208c84e79462507f7434d62.jpg'] },
+    { id: '100016', date: '08-11', person: '永哲', v: [null, null, 15.09, null], imgs: ['img/recvswzAqJhNnp/2c32bbd1857558b88347b65297e04b07.jpg'] }
   ];
 
-  // 进账：[date, from, to, amt, imgs]
+  // 进账：[id, date, from, to, amt, imgs]
   var incomes = [
-    { date: '08-11', from: '小慧老师', to: '永哲', amt: 242.00, imgs: ['img/recvrXjErfcsGn/image.png'] },
-    { date: '08-16', from: '小慧老师', to: '永哲', amt: 1000.00, imgs: ['img/recvssJgmLBq23/e8b8706b15dc1a13181c707b8c8c8864.jpg'] }
+    { id: '200001', date: '08-11', from: '小慧老师', to: '永哲', amt: 242.00, imgs: ['img/recvrXjErfcsGn/image.png'] },
+    { id: '200002', date: '08-16', from: '小慧老师', to: '永哲', amt: 1000.00, imgs: ['img/recvssJgmLBq23/e8b8706b15dc1a13181c707b8c8c8864.jpg'] }
   ];
 
   var catTotals = [0, 0, 0, 0];
@@ -199,6 +256,16 @@
 
   function money(v) { return v == null ? '—' : '¥' + Number(v).toFixed(2); }
   function rowTotal(v) { return v.reduce(function (a, b) { return a + (b || 0); }, 0); }
+
+  /* 侧边栏切换 */
+  document.querySelectorAll('.nav-btn').forEach(function (btn) {
+    btn.onclick = function () {
+      document.querySelectorAll('.nav-btn').forEach(function (b) { b.classList.remove('on'); });
+      btn.classList.add('on');
+      document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('on'); });
+      document.getElementById('page-' + btn.getAttribute('data-page')).classList.add('on');
+    };
+  });
 
   var lb = document.getElementById('lightbox');
   var lbImg = document.getElementById('lb-img');
@@ -229,7 +296,7 @@
     });
   }
 
-  // 项目汇总表
+  // 项目汇总
   (function () {
     var html = '<table><thead><tr><th>项目</th><th class="num">金额</th><th class="num">占比</th></tr></thead><tbody>';
     CATS.forEach(function (c, i) {
@@ -244,13 +311,13 @@
 
   // 进账表
   (function () {
-    var html = '<table><thead><tr><th>日期</th><th>付款人</th><th>收款人</th><th class="num">金额</th><th>收款截图</th></tr></thead><tbody>';
+    var html = '<table><thead><tr><th>编号</th><th>日期</th><th>付款人</th><th>收款人</th><th class="num">金额</th><th>收款截图</th></tr></thead><tbody>';
     incomes.forEach(function (r) {
-      var cap = r.date + ' 收款 ' + money(r.amt);
-      html += '<tr><td>' + r.date + '</td><td>' + r.from + '</td><td>' + r.to + '</td><td class="num">' + money(r.amt) + '</td>' +
+      var cap = r.id + ' ' + r.date + ' 收款 ' + money(r.amt);
+      html += '<tr><td><span class="id-tag">' + r.id + '</span></td><td>' + r.date + '</td><td>' + r.from + '</td><td>' + r.to + '</td><td class="num">' + money(r.amt) + '</td>' +
         '<td><div class="thumbs">' + thumbsHtml(r.imgs, cap) + '</div></td></tr>';
     });
-    html += '<tr class="total-row"><td colspan="3">合计</td><td class="num">' + money(totalIncome) + '</td><td></td></tr>';
+    html += '<tr class="total-row"><td colspan="4">合计</td><td class="num">' + money(totalIncome) + '</td><td></td></tr>';
     html += '</tbody></table>';
     var el = document.getElementById('income-table');
     el.innerHTML = html; bindThumbs(el);
@@ -258,17 +325,17 @@
 
   // 出账表
   (function () {
-    var html = '<table><thead><tr><th>日期</th><th>支出人员</th><th class="num">物业费＋水费</th><th class="num">电费</th><th class="num">伙食采购</th><th class="num">日常小吃</th><th class="num">小计</th><th>付款截图</th></tr></thead><tbody>';
+    var html = '<table><thead><tr><th>编号</th><th>日期</th><th>支出人员</th><th class="num">物业费＋水费</th><th class="num">电费</th><th class="num">伙食采购</th><th class="num">日常小吃</th><th class="num">小计</th><th>付款截图</th></tr></thead><tbody>';
     expenses.forEach(function (e) {
       var t = rowTotal(e.v);
-      var cap = e.date + ' ' + e.person + ' ' + money(t);
-      html += '<tr><td>' + e.date + '</td><td><span class="person-tag">' + e.person + '</span></td>' +
+      var cap = e.id + ' ' + e.date + ' ' + e.person + ' ' + money(t);
+      html += '<tr><td><span class="id-tag">' + e.id + '</span></td><td>' + e.date + '</td><td><span class="person-tag">' + e.person + '</span></td>' +
         '<td class="num">' + money(e.v[0]) + '</td><td class="num">' + money(e.v[1]) + '</td>' +
         '<td class="num">' + money(e.v[2]) + '</td><td class="num">' + money(e.v[3]) + '</td>' +
         '<td class="num">' + money(t) + '</td>' +
         '<td><div class="thumbs">' + thumbsHtml(e.imgs, cap) + '</div></td></tr>';
     });
-    html += '<tr class="total-row"><td colspan="6">合计</td><td class="num">' + money(totalExpense) + '</td><td></td></tr>';
+    html += '<tr class="total-row"><td colspan="7">合计</td><td class="num">' + money(totalExpense) + '</td><td></td></tr>';
     html += '</tbody></table>';
     var el = document.getElementById('expense-table');
     el.innerHTML = html; bindThumbs(el);
